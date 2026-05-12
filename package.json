@@ -1,0 +1,65 @@
+{
+  "name": "kanmobilador",
+  "version": "1.0.1",
+  "description": "Emulador KANMOBILADOR",
+  "main": "main.js",
+  "author": "Kendrick",
+  "license": "MIT",
+
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win",
+    "dist": "electron-builder"
+  },
+
+  "build": {
+
+    "appId": "com.kanmobilador.app",
+
+    "productName": "KANMOBILADOR",
+
+    "directories": {
+      "output": "dist"
+    },
+
+    "files": [
+      "**/*",
+      "!dist/*",
+      "!node_modules/.cache/*"
+    ],
+
+    "extraResources": [
+      {
+        "from": "scrcpy-win64-v3.3.4",
+        "to": "scrcpy-win64-v3.3.4"
+      }
+    ],
+
+    "win": {
+      "target": "nsis",
+      "icon": "public/assets/icon.ico"
+    },
+
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "ProyectosCarfa",
+        "repo": "KANMOBILADOR"
+      }
+    ]
+
+  },
+
+  "devDependencies": {
+    "electron": "^37.0.0",
+    "electron-builder": "^26.8.1",
+    "electron-updater": "^6.8.3"
+  }
+}

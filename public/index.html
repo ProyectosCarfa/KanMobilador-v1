@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KaNmObIlAdOr | Emulador v.1.0.1</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Orbitron:wght@400;500;600;700;800;900&family=Yuji+Boku&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <aside>
+        <div class="logo-aside">
+            <img src="assets/img/logo.png" alt="logo">
+        </div>
+        <ul>
+            <a href="#inicio">
+                <li class="menu-item active" data-section="inicio">
+                    <i class="fas fa-home"></i>
+                    <span>Inicio</span>
+                </li>
+            </a>
+            <a href="#dispositivo" class="disabled-link">
+                <li class="menu-item disable" data-section="dispositivo">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Dispositivo</span>
+                </li>
+            </a>
+            <a href="#controles" class="disabled-link" >
+                <li class="menu-item" data-section="controles">
+                    <i class="fas fa-gamepad"></i>
+                    <span>Controles</span>
+                </li>
+            </a>
+            <a href="#ajustes" class="disabled-link">
+                <li class="menu-item" data-section="ajustes">
+                    <i class="fas fa-sliders-h"></i>
+                    <span>Ajustes</span>
+                </li>
+            </a>
+            <a href="#herramientas" class="disabled-link">
+                <li class="menu-item" data-section="herramientas">
+                    <i class="fas fa-tools"></i>
+                    <span>Herramientas</span>
+                </li>
+            </a>
+            <a href="#registro" class="disabled-link">
+                <li class="menu-item" data-section="registro">
+                    <i class="fas fa-history"></i>
+                    <span>Registro</span>
+                </li>
+            </a>
+            <br>
+            <hr>
+            <div class="more-title">MÁS</div>
+            <a href="#soporte">
+                <li class="menu-item" data-section="soporte">
+                    <i class="fas fa-headset"></i>
+                    <span> Soporte </span>
+                </li>
+            </a>
+            <a href="#acercade">
+                <li class="menu-item" data-section="acercade">
+                    <i class="fas fa-info-circle"></i>
+                    <span> Acerca De</span>
+                </li>
+            </a>
+        </ul>
+        <div>
+            <h5>KANMOBILADOR</h5>
+            <p>v.1.0.1</p>
+        </div>
+    </aside>
+    <section class="contenedor-principal" id="beta">
+        <div class="inicio section-content active-content" id="inicio">
+            <div class="izquierda">
+                <div class="titulo">
+                    <img src="assets/img/inicio.png" alt="inicio">
+                </div>
+                <div class="contenido">
+                    <h5>Conecta tu celular y lleva el control.</h5>
+                    <p>KANMOBILADOR te permite visualizar y controlar la pantalla de tu dispositivo Android en tu PC.
+                    </p>
+                </div>
+                <div class="container-conectar">
+                    <h3>CONECTA TU DISPOSITIVO</h3>
+                    <div>
+                        <svg width="128" height="128" viewBox="0 0 128 128" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="purpleGlow" x1="64" y1="0" x2="64" y2="128">
+                                    <stop offset="0%" stop-color="#B46CFF" />
+                                    <stop offset="100%" stop-color="#7A2EFF" />
+                                </linearGradient>
+
+                                <filter id="glow">
+                                    <feGaussianBlur stdDeviation="3" result="blur" />
+                                    <feMerge>
+                                        <feMergeNode in="blur" />
+                                        <feMergeNode in="SourceGraphic" />
+                                    </feMerge>
+                                </filter>
+                            </defs>
+
+                            <g filter="url(#glow)">
+
+                                <!-- USB Top -->
+                                <rect x="52" y="10" width="24" height="18" rx="4" stroke="url(#purpleGlow)"
+                                    stroke-width="4" />
+
+                                <!-- USB holes -->
+                                <circle cx="59" cy="19" r="1.8" fill="url(#purpleGlow)" />
+                                <circle cx="69" cy="19" r="1.8" fill="url(#purpleGlow)" />
+
+                                <!-- Main Body -->
+                                <rect x="42" y="28" width="44" height="56" rx="10" stroke="url(#purpleGlow)"
+                                    stroke-width="4" />
+
+                                <!-- Inner Line -->
+                                <line x1="64" y1="46" x2="64" y2="66" stroke="url(#purpleGlow)" stroke-width="4"
+                                    stroke-linecap="round" />
+
+                                <!-- Cable -->
+                                <path d="M64 84 
+             V100 
+             C64 106 60 108 56 108" stroke="url(#purpleGlow)" stroke-width="4" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+
+                                <!-- Cable Tip -->
+                                <rect x="48" y="104" width="14" height="8" rx="2" fill="url(#purpleGlow)" />
+
+                            </g>
+
+                        </svg>
+                        <p>Conecta tu dispositivo Android por medio de un cable USB</p>
+                    </div>
+                    <p>Estado: <span id="estatus">No conectado</span></p>
+                    <button id="connectBtn">
+                        <i class="fa-solid fa-link"></i> Conectar
+                    </button>
+                    <button id="stopBtn">
+                        <i class="fa-solid fa-stop"></i> Detener
+                    </button>
+                </div>
+                <div class="card">
+                    <div id="logComandos" class="terminal">
+                        <div class="log-line"><i class="fa-solid fa-circle-check"></i>
+                            Sistema listo.</div>
+                        <div class="log-line">Usa los botones para conectar.</div>
+                    </div>
+                </div>
+
+
+                <div class="card-pantalla">
+                    <i class="fa-solid fa-tv"></i>
+                    <h5>PANTALLA EN TIEMPO REAL</h5>
+                    <p>Visualizar la pantalla de tu celular en alta calidad</p>
+                </div>
+                <div class="card-control">
+                    <i class="fa-solid fa-gamepad"></i>
+                    <h5>CONTROL TOTAL</h5>
+                    <p>Usa tu mouse y teclado para controlar tu dispositivo</p>
+                </div>
+                <p> 「すべての接続は、コントロールから始まる。」<br>
+                    — El control comienza con la conexión.
+                </p>
+            </div>
+            <div class="derecha">
+                <div class="phone-flotante">
+                    <img src="assets/img/phone.png" alt="phone">
+                    <div class="phoneTools">
+                        <i class="fa-solid fa-expand"></i>
+                        <i class="fa-solid fa-camera"></i>
+                        <i class="fa-regular fa-window-restore"></i>
+                        <i class="fa-solid fa-keyboard"></i>
+                        <i class="fa-regular fa-folder-open"></i>
+                        <i class="fa-solid fa-gear"></i>
+                        <i class="fa-solid fa-ellipsis"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ==================================================================== -->
+    <section class="container-general" id="premium">
+        <div class="dispositivo section-content" id="dispositivo">
+            <!-- <div class="empty-section-dispositivo">
+
+                <div class="izquierda-dispositivo">
+                    <div class="titulo">
+                        <img src="assets/img/dispositivo.png" alt="inicio">
+                    </div>
+                    <div class="contenido-dispositivo">
+                        <h5>Conecta y administra tu dispositivo movil</h5>
+                    </div>
+                    <div class="estatus-dispositivo">
+                        <div class="img-dispositivo">
+                            <img src="" alt="">
+                            <h3 id="nombre-dispositivo">Nombre del dispositivo</h3>
+                            <p><span id="estatus">No conectado</span></p>
+                            <i class="fa-solid fa-battery-three-quarters"></i><span
+                                id="porcentaje-bateria-movil">100%</span>
+                            <p><span id="modelo-movil">Android 10 </span> | <span id="version-movil">MIUI 14.0.3</span>
+                            </p>
+                        </div>
+                        <hr>
+                        <div class="info">
+                            <div class="info-resolution">
+                                <label for="">
+                                    <i class="fa-solid fa-maximize"></i>
+                                    Resolución
+                                </label>
+                                <label for="" id="resolucion-movil">1080 x 2400</label>
+                            </div>
+                            <div class="info-wifi">
+                                <label for="">
+                                    <i class="fa-solid fa-wifi"></i>
+                                    Wi-Fi
+                                </label>
+                                <label for="" id="wifi-movil">KANMOBI-5G</label>
+                            </div>
+                            <div class="info-ip">
+                                <label for="">
+                                    <i class="fa-solid fa-location-crosshairs"></i>
+                                    IP Local
+                                </label>
+                                <label for="" id="ip-movil">192.168.1.1</label>
+                            </div>
+                            <div class="info-almacenamiento">
+                                <label for="">
+                                    <i class="fa-solid fa-folder-closed"></i>
+                                    Almacenamiento
+                                </label>
+                                <label for="" id="almacenamiento-movil">128/256 GB</label>
+                            </div>
+                            <hr>
+                            <div class="buttoms-style">
+                                <button><i class="fa-solid fa-rectangle-xmark"></i>Desconectar</button>
+                                <button><i class="fa-solid fa-power-off"></i>Reiniciar </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accesos-rapidos">
+                        <h2>ACCESOS RÁPIDOS</h2>
+                        <div class="refresh">
+                            <i class="fa-solid fa-arrows-rotate"></i>
+                            <p>Refrescar</p>
+                        </div>
+                        <div class="rotar-pantalla">
+                            <i class="fa-solid fa-camera-rotate"></i>
+                            <p>Rotar pantalla</p>
+                        </div>
+                        <div class="pantalla-completa">
+                            <i class="fa-solid fa-expand"></i>
+                            <p>Pantalla Completa</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="centrado">
+                    <div class="img-flotante">
+                        <img src="assets/img/phone-movil.png" alt="movil-centrado">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="derecha-contenedor">
+                        <div class="captura-contenedor">
+                            <h2>CAPTURA DE PANTALLA</h2>
+                            <div class="container-capture" id="contenedor-captura"></div>
+                            <div class="buttom-style">
+                                <button>
+                                    <i class="fa-solid fa-camera-retro"></i>
+                                    Tomar captura
+                                </button>
+                                <button>
+                                    <i class="fa-regular fa-file-image"></i>
+                                    Ver capturas
+                                </button>
+                            </div>
+                        </div>
+                        <div class="grabacion-pantalla">
+                            <div class="contador-grabacion">
+                                <label for="" id="contador-grabacion">00:00:00</label>
+                                <p id="estatus-grabacion">No Iniciado</p>
+                            </div>
+                            <div class="buttoms style">
+                                <button id="iniciar-grabacion">Iniciar grabación</button>
+                            </div>
+                            <div class="info-grabacion">
+                                <div class="micro-info-grabacion">
+                                    <label for="">
+                                        <i class="fa-solid fa-microphone"></i>
+                                        Micrófono
+                                    </label>
+                                    <label for="" id="estatus-microfono-grabacion">OFF</label>
+                                </div>
+                                <div class="sonido-info-grabacion">
+                                    <label for="">
+                                        <i class="fa-solid fa-volume"></i>
+                                        Sonido del sistema
+                                    </label>
+                                    <label for="" id="estatus-sonido-grabacion">OFF</label>
+                                </div>
+                                <div class="calidad-info-grabacion">
+                                    <label for="">
+                                        <i class="fa-solid fa-gear"></i>
+                                        Calidad
+                                    </label>
+                                    <label for="" id="estatus-calidad-grabacion">1080p-60fps</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notificaciones-footer">
+                    <div class="footer" id="notificacion">Sistema funcionando correctamente</div>
+                </div>
+            </div> -->
+        </div>
+    </section>
+    <!-- ===================================================================== -->
+    <section class="container-general">
+        <div class="controles section-content" id="controles">
+            <!-- <div class="controles-header">
+                <div class="titulo-controles">
+                    <img src="assets/img/controles.png" alt="controles">
+                    <p>Personaliza y configura el control de tu dispositivo</p>
+                </div>
+            </div>
+            <div class="navegation">
+                <ul class="nav-controls">
+                    <a href="#controles">
+                        <li class="nav-item active" data-control="dispositivo">
+                            <i class="fa-solid fa-gamepad"></i>
+                            <span>CONTROL DEL DISPOSITIVO</span>
+                        </li>
+                    </a>
+                    <a href="#teclado">
+                        <li class="nav-item" data-control="teclado">
+                            <i class="fa-solid fa-keyboard"></i>
+                            <span>TECLADO</span>
+                        </li>
+                    </a>
+                    <a href="#raton">
+                        <li class="nav-item" data-control="raton">
+                            <i class="fa-solid fa-computer-mouse"></i>
+                            <span>RATÓN</span>
+                        </li>
+                    </a>
+                    <a href="#gamepad">
+                        <li class="nav-item" data-control="gamepad">
+                            <i class="fa-solid fa-gamepad"></i>
+                            <span>GAMEPAD</span>
+                        </li>
+                    </a>
+                </ul>
+            </div>
+            <div class="teclado">
+                <div id="teclado" class="titulo-teclado">
+                    <h2>Teclado</h2>
+                </div>
+            </div>
+
+            <div class="raton" id="raton">
+                <div class="titulo-raton">
+                    <h2>Raton</h2>
+                </div>
+            </div>
+
+            <div class="gamepad" id="gamepad">
+                <div class="titulo-gamepad">
+                    <h2>Gamepad</h2>
+                </div>
+            </div>
+            <div class="esquema-controles">
+                <h2><i class="fa-solid fa-diagram-project"></i> ESQUEMA DE CONTROLES</h2>
+                <div class="esquema-selector">
+                    <select id="select-esquema" class="esquema-select">
+                        <option value="personalizado1">Esquema personalizado 1</option>
+                        <option value="personalizado2">Esquema personalizado 2</option>
+                        <option value="predeterminado">Esquema predeterminado</option>
+                        <option value="fps">Esquema FPS</option>
+                        <option value="moba">Esquema MOBA</option>
+                    </select>
+                    <button class="btn-esquema" id="btn-opciones">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                </div>
+                <div class="esquema-preview">
+                    <div class="preview-container">
+                        <img src="assets/img/control-esquema.png" alt="esquema de controles" class="esquema-img"
+                            id="esquema-img">
+                        <div class="preview-overlay">
+                            <span>Vista previa del esquema</span>
+                        </div>
+                    </div>
+                    <div class="esquema-acciones">
+                        <button class="btn-editar" id="btn-editar">
+                            <i class="fa-solid fa-pen"></i> Editar esquema
+                        </button>
+                        <button class="btn-restablecer" id="btn-restablecer">
+                            <i class="fa-solid fa-rotate-left"></i> Restablecer
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="asignacion-botones">
+                <h2><i class="fa-solid fa-keyboard"></i> ASIGNACIÓN DE BOTONES</h2>
+                <div class="botones-grid">
+                    <div class="boton-card" data-boton="1">
+                        <div class="boton-icon"><i class="fa-solid fa-circle"></i></div>
+                        <div class="boton-info">
+                            <span class="boton-nombre">Botón 1</span>
+                            <span class="boton-asignado">Sin asignar</span>
+                        </div>
+                        <button class="btn-asignar">Asignar</button>
+                    </div>
+                    <div class="boton-card" data-boton="2">
+                        <div class="boton-icon"><i class="fa-solid fa-circle"></i></div>
+                        <div class="boton-info">
+                            <span class="boton-nombre">Botón 2</span>
+                            <span class="boton-asignado">Sin asignar</span>
+                        </div>
+                        <button class="btn-asignar">Asignar</button>
+                    </div>
+                    <div class="boton-card" data-boton="3">
+                        <div class="boton-icon"><i class="fa-solid fa-circle"></i></div>
+                        <div class="boton-info">
+                            <span class="boton-nombre">Botón 3</span>
+                            <span class="boton-asignado">Sin asignar</span>
+                        </div>
+                        <button class="btn-asignar">Asignar</button>
+                    </div>
+                    <div class="boton-card" data-boton="4">
+                        <div class="boton-icon"><i class="fa-solid fa-circle"></i></div>
+                        <div class="boton-info">
+                            <span class="boton-nombre">Botón 4</span>
+                            <span class="boton-asignado">Sin asignar</span>
+                        </div>
+                        <button class="btn-asignar">Asignar</button>
+                    </div>
+                    <div class="boton-card" data-boton="5">
+                        <div class="boton-icon"><i class="fa-solid fa-circle"></i></div>
+                        <div class="boton-info">
+                            <span class="boton-nombre">Botón 5</span>
+                            <span class="boton-asignado">Sin asignar</span>
+                        </div>
+                        <button class="btn-asignar">Asignar</button>
+                    </div>
+                </div>
+                <div class="botones-accion">
+                    <button class="btn-limpiar-todo" id="btn-limpiar">
+                        <i class="fa-solid fa-eraser"></i> Limpiar todo
+                    </button>
+                </div>
+            </div>
+
+            <div class="perfil-control">
+                <div class="perfil-header">
+                    <h2><i class="fa-solid fa-user"></i> PERFILES DE CONTROL</h2>
+                    <button class="btn-nuevo-perfil" id="btn-nuevo-perfil">
+                        <i class="fa-solid fa-plus"></i> Nuevo perfil
+                    </button>
+                </div>
+                <div class="perfiles-lista" id="esquemas">
+                    <div class="perfil-vacio">
+                        <i class="fa-regular fa-folder-open"></i>
+                        <span>Sin esquemas guardados</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ajustes-avanzados">
+                <hr class="divider">
+                <div class="titulo-ajuste">
+                    <h2>AJUSTES AVANZADOS</h2>
+                </div>
+                <div class="ajuste-item">
+                    <div class="ajuste-info">
+                        <h3><i class="fa-solid fa-mobile"></i> Vibración</h3>
+                        <p>Habilitar vibración en el dispositivo</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="vibracion-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="ajuste-item">
+                    <div class="ajuste-info">
+                        <h3><i class="fa-solid fa-hand-pointer"></i> Mostrar toques</h3>
+                        <p>Mostrar los toques en la pantalla</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="toques-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="ajuste-item sensibilidad">
+                    <div class="ajuste-info">
+                        <h3><i class="fa-solid fa-chart-line"></i> Sensibilidad del joystick</h3>
+                        <p>Ajusta la sensibilidad del control</p>
+                    </div>
+                    <div class="sensibilidad-control">
+                        <input type="range" id="barra-sensibilidad" class="sensibilidad-range" min="0" max="100"
+                            value="50">
+                        <span id="numero-sensibilidad" class="sensibilidad-valor">50%</span>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </section>
+    <!-- ===================================================================== -->
+    <section class="container-general">
+        <div class="ajustes section-content" id="ajustes">
+            <!-- <div class="controles-header">
+                <div class="titulo-controles">
+                    <img src="assets/img/ajustes.png" alt="controles">
+                    <p>Personaliza la aplicación según tus preferencias</p>
+                </div>
+            </div>
+            <div class="navegation-ajustes">
+                <ul>
+                    <li>
+                        GENERAL
+                    </li>
+                    <li>
+                        RENDIMIENTO
+                    </li>
+                    <li>
+                        GRÁFICOS
+                    </li>
+                    <li>
+                        AUDIO
+                    </li>
+                    <li>
+                        ATAJOS RÁPIDOS
+                    </li>
+                    <li>
+                        ACERCA DE
+                    </li>
+                </ul>
+            </div>
+            <div class="card-inicio">
+                <h2>INICIO Y COMPORTAMIENTO</h2>
+                <div class="contenedor-1">
+                    <i class="fa-solid fa-window-restore"></i>
+                    <h3>Iniciar con Windows</h3>
+                    <p>Abrir KANMOBILADOR automaticamente al iniciar Windows</p>
+                    <label class="switch">
+                        <input type="checkbox" id="vibracion-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="contenedor-2">
+                    <i class="fa-solid fa-tv"></i>
+                    <h3>Minimizar a la bandeja</h3>
+                    <p>Minimizar la aplicacion a la bandeja del sistema</p>
+                    <label class="switch">
+                        <input type="checkbox" id="vibracion-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="contenedor-3">
+                    <i class="fa-solid fa-box-archive"></i>
+                    <h3>Recordar última sesión</h3>
+                    <p>Abrir la última sesión al iniciar la aplicación</p>
+
+                </div>
+                <div class="contenedor-4">
+                    <i class="fa-solid fa-bell"></i>
+                    <h3>Notificaciones</h3>
+                    <p>Mostrar notificaciones del estado del dispositivo</p>
+                    <label class="switch">
+                        <input type="checkbox" id="vibracion-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="card-actualizaciones">
+                <h2>ACTUALIZACIONES</h2>
+                <div class="contenedor1">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                    <h3>Buscar actualizaciones automáticamente</h3>
+                    <p>Descargar e instalar actualizaciones automáticamente</p>
+                    <label class="switch">
+                        <input type="checkbox" id="vibracion-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="contenedor2">
+                    <i class="fa-solid fa-download"></i>
+                    <h3>Actualizaciones beta</h3>
+                    <p>Recibir actualizaciones beta y funciones experimentales</p>
+                    <label class="switch">
+                        <input type="checkbox" id="vibracion-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="card-idioma">
+                <h2>IDIOMA</h2>
+                <div class="contenedor1">
+                    <i class="fa-solid fa-earth-africa"></i>
+                    <h3>Idioma de la aplicación</h3>
+                    <p>Selecciona el idioma de KanMobilador</p>
+                    <select name="" id="">
+                        <option value="">Español (Latinoamérica)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card-rendimiento">
+                <h2>RENDIMIENTO</h2>
+                <div class="contenedor1">
+                    <i class="fa-solid fa-gauge"></i>
+                    <h3>Modo de rendimiento</h3>
+                    <p>Optimizar el rendimiento del emulador</p>
+                    <select name="" id="">
+                        <option value="">Equilibrado</option>
+                    </select>
+                </div>
+                <div class="contenedor2">
+                    <i class="fa-brands fa-windows"></i>
+                    <h3>Limite de FPS</h3>
+                    <p>Establecer el imite maximo de FPS</p>
+                    <select name="" id="">
+                        <option value="">60 FPS</option>
+                    </select>
+                </div>
+                <div class="contenedor3">
+                    <i class="fa-solid fa-temperature-arrow-up"></i>
+                    <h3>Temperatura objetivo</h3>
+                    <p>Controlar la temperatura del dispositivo</p>
+                    <select name="" id="">
+                        <option value="">Automatico</option>
+                    </select>
+                </div>
+            </div>
+            <div class="card-almacenamiento">
+                <h2>ALMACENAMIENTO</h2>
+                <div class="contenedor1">
+                    <i class="fa-solid fa-folder-open"></i>
+                    <h3>Ubicación de capturas</h3>
+                    <p>C/Kammobilador/capturas/</p>
+                    <button>Cambiar</button>
+                </div>
+                <div class="contenedor2">
+                    <i class="fa-solid fa-video"></i>v
+                    <h3>Ubicación de grabaciones</h3>
+                    <p>C:/Kanmobilador/Grabaciones/</p>
+                    <button>Cambiar</button>
+                </div>
+                <div class="contenedor3">
+                    <i class="fa-solid fa-trash-can"></i>
+                    <h3>Limpiar caché</h3>
+                    <p>Eliminar archivos temporales y caché</p>
+                    <button>Limpiar</button>
+                </div>
+            </div>
+            <div class="card-apariencia">
+                <h2>APARIENCIA</h2>
+                <div class="contenedor1">
+                    <i class="fa-solid fa-pen-ruler"></i>
+                    <h3>Tema de la aplicación</h3>
+                    <p>Selecciona el tema de la interfaz</p>
+                    <select name="" id="">
+                        <option value="">Oscuro(Predeterminado)</option>
+                    </select>
+                </div>
+                <div class="contenedor2">
+                    <i class="fa-solid fa-palette"></i>
+                    <h3>Color de acento</h3>
+                    <p>Elige el color de acento de la aplicación</p>
+                    <button>Withe</button>
+                    <button>Morado</button>
+                    <button>Azul</button>
+                    <button>Verde</button>
+                    <button>Naranja</button>
+                    <button>Rojo</button>
+                </div>
+            </div> -->
+        </div>
+    </section>
+    <!-- ===================================================================== -->
+    <section class="container-general">
+        <div class="herramientas section-content" id="herramientas">
+            <!-- <div class="titulo">
+                <img src="assets/img/herramientas.png" alt="herramientas">
+            </div> -->
+    </section>
+    <!-- ====================================================================== -->
+    <section class="container-general">
+        <div class="registro section-content" id="registro">
+            <!-- <div class="titulo">
+                <img src="assets/img/registro.png" alt="registro">
+            </div> -->
+        </div>
+    </section>
+    <!-- ========================================================================== -->
+    <section class="container-general" id="beta">
+        <div class="soporte section-content" id="soporte">
+            <div class="soporte-header">
+                <div class="soporte-titulo">
+                    <i class="fa-solid fa-headset"></i>
+                    <h1>Centro de Soporte</h1>
+                </div>
+                <div class="soporte-banner">
+                    <img src="assets/img/soporte-banner.png" alt="soporte" class="banner-img">
+                </div>
+            </div>
+
+            <div class="soporte-grid">
+                <!-- Card 1 - Contacto Directo -->
+                <div class="soporte-card">
+                    <div class="card-icon">
+                        <i class="fa-regular fa-envelope"></i>
+                    </div>
+                    <h3>Correo Electrónico</h3>
+                    <p>Contacto directo para soporte técnico y consultas</p>
+                    <div class="contact-info">
+                        <i class="fa-regular fa-envelope"></i>
+                        <span>alvinescarlos887@gmail.com</span>
+                    </div>
+                    <button class="copy-btn" data-copy="alvinescarlos887@gmail.com">
+                        <i class="fa-regular fa-copy"></i> Copiar
+                    </button>
+                </div>
+
+                <!-- Card 2 - GitHub -->
+                <div class="soporte-card">
+                    <div class="card-icon">
+                        <i class="fa-brands fa-github"></i>
+                    </div>
+                    <h3>Repositorio GitHub</h3>
+                    <p>Código fuente, reportes y documentación</p>
+                    <div class="contact-info">
+                        <i class="fa-brands fa-github"></i>
+                        <span>ProyectosCarfa</span>
+                    </div>
+                    <a href="https://github.com/ProyectosCarfa" target="_blank" class="soporte-btn">
+                        <i class="fa-brands fa-github"></i> Visitar GitHub
+                    </a>
+                </div>
+
+                <!-- Card 3 - WhatsApp -->
+                <div class="soporte-card">
+                    <div class="card-icon">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <h3>WhatsApp Soporte</h3>
+                    <p>Atención rápida por mensajería instantánea</p>
+                    <div class="contact-info">
+                        <i class="fa-brands fa-whatsapp"></i>
+                        <span>+51 999 999 999</span>
+                    </div>
+                    <button class="whatsapp-btn">
+                        <i class="fa-brands fa-whatsapp"></i> Enviar Mensaje
+                    </button>
+                </div>
+
+                <!-- Card 4 - Discord -->
+                <div class="soporte-card">
+                    <div class="card-icon">
+                        <i class="fa-brands fa-discord"></i>
+                    </div>
+                    <h3>Comunidad Discord</h3>
+                    <p>Únete a nuestra comunidad y obtén ayuda</p>
+                    <div class="contact-info">
+                        <i class="fa-brands fa-discord"></i>
+                        <span>Discord.gg/KanMobilador</span>
+                    </div>
+                    <button class="discord-btn">
+                        <i class="fa-brands fa-discord"></i> Unirse al Servidor
+                    </button>
+                </div>
+
+                <!-- Card 5 - Documentación -->
+                <div class="soporte-card">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-book"></i>
+                    </div>
+                    <h3>Documentación</h3>
+                    <p>Guías, tutoriales y preguntas frecuentes</p>
+                    <div class="contact-info">
+                        <i class="fa-solid fa-file-alt"></i>
+                        <span>Documentación Oficial</span>
+                    </div>
+                    <button class="docs-btn">
+                        <i class="fa-solid fa-book-open"></i> Ver Documentación
+                    </button>
+                </div>
+
+                <!-- Card 6 - Reportar Bug -->
+                <div class="soporte-card">
+                    <div class="card-icon">
+                        <i class="fa-solid fa-bug"></i>
+                    </div>
+                    <h3>Reportar Error</h3>
+                    <p>Reporta bugs o problemas de funcionamiento</p>
+                    <div class="contact-info">
+                        <i class="fa-regular fa-clipboard"></i>
+                        <span>Reporte de Incidencias</span>
+                    </div>
+                    <button class="report-btn">
+                        <i class="fa-regular fa-flag"></i> Reportar Error
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sección de Horario de Atención -->
+            <div class="horario-card">
+                <div class="horario-icon">
+                    <i class="fa-regular fa-clock"></i>
+                </div>
+                <div class="horario-info">
+                    <h3>Horario de Atención</h3>
+                    <p>Lunes a Viernes: 9:00 AM - 6:00 PM (GMT-5)</p>
+                    <p>Sábados: 10:00 AM - 2:00 PM</p>
+                    <p><i class="fa-regular fa-clock"></i> Tiempo de respuesta estimado: 24 horas</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="container-general" id="beta">
+        <div class="acercade section-content" id="acercade">
+            <div class="cards-acerca-container">
+                <!-- Card 1 - Información General -->
+                <h2><i class="fa-solid fa-info-circle"></i> Información General</h2>
+                <p><strong>Nombre:</strong> KanMobilador - Android Control Suite</p>
+                <p><strong>Versión actual:</strong> 1.0.1</p>
+                <p><strong>Fecha de lanzamiento:</strong> 20 de April, 2026</p>
+                <p><strong>Plataforma:</strong> Windows 10/11 (x64)</p>
+                <p><strong>Licencia:</strong> MIT Open Source</p>
+
+                <!-- Card 2 - Historial de Versiones -->
+                <h2><i class="fa-solid fa-code-branch"></i> Historial de Versiones</h2>
+                <div class="version-history">
+                    <div class="version-item">
+                        <strong>v2.1.0</strong> - Marzo 2026
+                        <ul>
+                            <li>✨ Soporte nativo para Android 14</li>
+                            <li>🚀 Mejora en la latencia del mirroring</li>
+                            <li>🐛 Corrección de bugs en conexión WiFi</li>
+                        </ul>
+                    </div>
+                    <div class="version-item">
+                        <strong>v2.1.1</strong> - Abril 2026
+                        <span class="version-badge">Actual</span>
+                        <ul>
+                            <li>🔧 Optimización de rendimiento</li>
+                            <li>📱 Mejora en la detección de dispositivos</li>
+                            <li>🐛 Correcciones menores</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card 3 - Equipo de Desarrollo -->
+                <h2><i class="fa-solid fa-users"></i> Equipo de Desarrollo</h2>
+                <div class="team-members">
+                    <div class="member">
+                        <i class="fa-solid fa-crown"></i>
+                        <strong>CARFA</strong>
+                        <span>Fundador & Desarrollador Principal</span>
+                        <small>Arquitectura del sistema, integración ADB</small>
+                        <i class="fa-solid fa-palette"></i>
+                        <span>UI/UX Designer</span>
+                        <small>Diseño de interfaz y animaciones</small>
+                        <i class="fa-solid fa-bug"></i>
+                        <span>QA Tester</span>
+                        <small>Control de calidad y pruebas</small>
+                    </div>
+                </div>
+
+                <!-- Card 4 - Agradecimientos -->
+                <h2><i class="fa-regular fa-heart"></i> Agradecimientos</h2>
+                <p>A toda la comunidad open source que hizo posible este proyecto, especialmente a los
+                    desarrolladores de SCRCPY y ADB.</p>
+                <p><i class="fa-brands fa-github"></i> <strong>Repositorio:</strong> <a
+                        href="https://github.com/ProyectosCarfa">https://github.com/ProyectosCarfa</a></p>
+                <p><i class="fa-regular fa-envelope"></i> <strong>Contacto:</strong> <a
+                        href="mailto:cf.soluttions.27@gmail.com">cf.soluttions.27@gmail.com</a></p>
+                <p><i class="fa-brands fa-discord"></i> <strong>Soporte:</strong> Discord.gg/DragonEmu</p>
+            </div>
+        </div>
+    </section>
+</body>
+<script src="./index.js"></script>
+
+</html>
