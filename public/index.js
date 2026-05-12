@@ -1,5 +1,5 @@
 require('./global/buttons.js');
-
+const { ipcRenderer } = require('electron');
 // ===================== MANEJO DE SECCIONES =====================
 document.addEventListener('DOMContentLoaded', () => {
     console.log("✅ KANMOBILADOR - Sistema iniciado correctamente");
@@ -411,4 +411,118 @@ window.addEventListener('hashchange', () => {
     if (menuItem) {
         menuItem.click();
     }
+});
+
+
+
+// ====AGREGAR NOTIFICACION 12/05/2026======
+// ==========================================
+// ACTUALIZACIONES
+// ==========================================
+
+// CREAR NOTIFICACIÓN
+function mostrarNotificacion(texto, tipo = 'info') {
+
+    const noti = document.createElement('div');
+
+    noti.className = 'notificacion-update';
+
+    noti.innerHTML = `
+        <i class="fa-solid ${tipo === 'success'
+            ? 'fa-circle-check'
+            : tipo === 'error'
+                ? 'fa-circle-xmark'
+                : 'fa-circle-info'}"></i>
+        <span>${texto}</span>
+    `;
+
+    document.body.appendChild(noti);
+
+    setTimeout(() => {
+
+        noti.classList.add('show');
+
+    }, 100);
+
+    setTimeout(() => {
+
+        noti.classList.remove('show');
+
+        setTimeout(() => {
+
+            noti.remove();
+
+        }, 300);
+
+    }, 4000);
+
+}
+
+// MODAL UPDATE
+function mostrarModalActualizacion() {
+
+    const modal = document.createElement('div');
+
+    modal.className = 'modal-update';
+
+    modal.innerHTML = `
+    
+        <div class="modal-update-content">
+
+            <i class="fa-solid fa-download"></i>
+
+            <h2>Nueva actualización disponible</h2>
+
+            <p>
+                Hay una nueva versión de KANMOBILADOR disponible.
+            </p>
+
+            <button id="btn-update-ok">
+                Actualizar ahora
+            </button>
+
+        </div>
+
+    `;
+
+    document.body.appendChild(modal);
+
+    document
+        .getElementById('btn-update-ok')
+        .addEventListener('click', () => {
+
+            modal.remove();
+
+            mostrarNotificacion(
+                'Descargando actualización...',
+                'info'
+            );
+
+        });
+
+}
+
+// EVENTOS DESDE MAIN
+ipcRenderer.on('update_available', () => {
+
+    mostrarModalActualizacion();
+
+});
+
+ipcRenderer.on('update_not_available', () => {
+
+    mostrarNotificacion(
+        'Sin actualizaciones.',
+        'success'
+    );
+
+});
+
+ipcRenderer.on('update_downloaded', () => {
+
+    mostrarNotificacion(
+        'Actualización descargada. Reiniciando...',
+        'success'
+    );
+
 });

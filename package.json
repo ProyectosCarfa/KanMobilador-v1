@@ -1,6 +1,6 @@
 {
   "name": "kanmobilador",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Emulador KANMOBILADOR",
   "main": "main.js",
   "author": "Kendrick",
@@ -57,9 +57,12 @@
 
   },
 
+  "dependencies": {
+    "electron-updater": "^6.8.3"
+  },
+
   "devDependencies": {
     "electron": "^37.0.0",
-    "electron-builder": "^26.8.1",
-    "electron-updater": "^6.8.3"
+    "electron-builder": "^26.8.1"
   }
 }

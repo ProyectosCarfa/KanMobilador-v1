@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const { exec } = require('child_process');
 const os = require('os');
 const path = require('path');
@@ -26,6 +26,13 @@ const SCRCPY_DIR = path.join(
 );
 
 // ==========================================
+// CONFIG AUTOUPDATER
+// ==========================================
+
+autoUpdater.autoDownload = true;
+autoUpdater.autoInstallOnAppQuit = true;
+
+// ==========================================
 // CREAR VENTANA
 // ==========================================
 
@@ -36,8 +43,6 @@ function crearVentana() {
         width: 1060,
         height: 500,
 
-        // icon: path.join(__dirname, 'public/assets/icon.ico'),
-
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
@@ -47,13 +52,41 @@ function crearVentana() {
 
     ventana.loadFile('public/index.html');
 
-    // SOLO EN DESARROLLO
+    // DEVTOOLS SOLO EN DESARROLLO
     if (isDev) {
+
         ventana.webContents.openDevTools();
+
     }
 
-    // BUSCAR ACTUALIZACIONES
-    autoUpdater.checkForUpdatesAndNotify();
+    // CUANDO TERMINE DE CARGAR
+    ventana.webContents.on('did-finish-load', () => {
+
+        console.log('✅ Ventana cargada');
+
+        // SOLO BUSCAR UPDATES EN PRODUCCIÓN
+        if (!isDev) {
+
+            console.log('🔍 Buscando actualizaciones...');
+
+            autoUpdater.checkForUpdatesAndNotify();
+
+        } else {
+
+            console.log('🛠 Modo desarrollo: updates desactivados');
+
+            // PROBAR NOTIFICACIÓN MANUAL
+            setTimeout(() => {
+
+                ventana.webContents.send(
+                    'update_not_available'
+                );
+
+            }, 2000);
+
+        }
+
+    });
 
 }
 
@@ -68,41 +101,137 @@ app.whenReady().then(() => {
 });
 
 // ==========================================
-// ACTUALIZACIONES
+// CERRAR APP
 // ==========================================
 
-autoUpdater.on('update-available', () => {
+app.on('window-all-closed', () => {
 
-    dialog.showMessageBox({
+    if (process.platform !== 'darwin') {
 
-        type: 'info',
-        title: 'KANMOBILADOR',
-        message: 'Nueva actualización disponible.'
+        app.quit();
 
-    });
+    }
 
 });
 
+// ==========================================
+// REABRIR EN MAC
+// ==========================================
+
+app.on('activate', () => {
+
+    if (BrowserWindow.getAllWindows().length === 0) {
+
+        crearVentana();
+
+    }
+
+});
+
+// ==========================================
+// EVENTOS UPDATE
+// ==========================================
+
+// BUSCANDO
+autoUpdater.on('checking-for-update', () => {
+
+    console.log('🔍 Verificando actualizaciones...');
+
+});
+
+// UPDATE DISPONIBLE
+autoUpdater.on('update-available', (info) => {
+
+    console.log('✅ Nueva actualización encontrada');
+
+    console.log(info);
+
+    if (ventana) {
+
+        ventana.webContents.send(
+            'update_available'
+        );
+
+    }
+
+});
+
+// NO HAY UPDATE
+autoUpdater.on('update-not-available', (info) => {
+
+    console.log('❌ No hay actualizaciones');
+
+    console.log(info);
+
+    if (ventana) {
+
+        ventana.webContents.send(
+            'update_not_available'
+        );
+
+    }
+
+});
+
+// PROGRESO DESCARGA
+autoUpdater.on('download-progress', (progressObj) => {
+
+    const porcentaje = Math.round(
+        progressObj.percent
+    );
+
+    console.log(
+        `⬇ Descargando actualización: ${porcentaje}%`
+    );
+
+    if (ventana) {
+
+        ventana.webContents.send(
+            'log',
+            `⬇ Descargando actualización: ${porcentaje}%`
+        );
+
+    }
+
+});
+
+// DESCARGA COMPLETA
 autoUpdater.on('update-downloaded', () => {
 
-    dialog.showMessageBox({
+    console.log('🎉 Actualización descargada');
 
-        type: 'info',
-        title: 'KANMOBILADOR',
-        message: 'Actualización descargada. Reiniciando aplicación.',
-        buttons: ['Reiniciar']
+    if (ventana) {
 
-    }).then(() => {
+        ventana.webContents.send(
+            'update_downloaded'
+        );
+
+    }
+
+    // ESPERAR PARA VER NOTIFICACIÓN
+    setTimeout(() => {
 
         autoUpdater.quitAndInstall();
 
-    });
+    }, 4000);
 
 });
 
+// ERROR
 autoUpdater.on('error', (err) => {
 
-    console.log('Error updater:', err);
+    console.log('🚨 ERROR AUTOUPDATER');
+
+    console.log(err);
+
+    if (ventana) {
+
+        ventana.webContents.send(
+            'log',
+            '❌ Error buscando actualización'
+        );
+
+    }
 
 });
 
@@ -116,6 +245,8 @@ ipcMain.on('abrir-scrcpy', () => {
         SCRCPY_DIR,
         'scrcpywifi.bat'
     );
+
+    if (!ventana) return;
 
     ventana.webContents.send(
         'log',
@@ -136,19 +267,27 @@ ipcMain.on('abrir-scrcpy', () => {
 
     proceso.stdout.on('data', (data) => {
 
-        ventana.webContents.send(
-            'log',
-            data.toString()
-        );
+        if (ventana) {
+
+            ventana.webContents.send(
+                'log',
+                data.toString()
+            );
+
+        }
 
     });
 
     proceso.stderr.on('data', (data) => {
 
-        ventana.webContents.send(
-            'log',
-            '❌ ' + data.toString()
-        );
+        if (ventana) {
+
+            ventana.webContents.send(
+                'log',
+                '❌ ' + data.toString()
+            );
+
+        }
 
     });
 
@@ -163,10 +302,14 @@ ipcMain.on('detener-scrcpy', () => {
     exec('taskkill /IM scrcpy.exe /F');
     exec('taskkill /IM adb.exe /F');
 
-    ventana.webContents.send(
-        'log',
-        '🛑 scrcpy cerrado'
-    );
+    if (ventana) {
+
+        ventana.webContents.send(
+            'log',
+            '🛑 scrcpy cerrado'
+        );
+
+    }
 
 });
 
@@ -175,6 +318,8 @@ ipcMain.on('detener-scrcpy', () => {
 // ==========================================
 
 ipcMain.on('ejecutar-comando', (event, comando) => {
+
+    if (!ventana) return;
 
     ventana.webContents.send(
         'log',
@@ -190,19 +335,27 @@ ipcMain.on('ejecutar-comando', (event, comando) => {
 
     proceso.stdout.on('data', (data) => {
 
-        ventana.webContents.send(
-            'log',
-            data.toString()
-        );
+        if (ventana) {
+
+            ventana.webContents.send(
+                'log',
+                data.toString()
+            );
+
+        }
 
     });
 
     proceso.stderr.on('data', (data) => {
 
-        ventana.webContents.send(
-            'log',
-            data.toString()
-        );
+        if (ventana) {
+
+            ventana.webContents.send(
+                'log',
+                data.toString()
+            );
+
+        }
 
     });
 
@@ -228,6 +381,7 @@ ipcMain.on('escanear-red', async () => {
             ) {
 
                 ipLocal = net.address;
+
                 break;
 
             }
@@ -238,18 +392,26 @@ ipcMain.on('escanear-red', async () => {
 
     if (!ipLocal) {
 
-        ventana.webContents.send(
-            'log',
-            '❌ No se detectó red'
-        );
+        if (ventana) {
+
+            ventana.webContents.send(
+                'log',
+                '❌ No se detectó red'
+            );
+
+        }
 
         return;
 
     }
 
-    ventana.webContents.send(
-        'log',
-        `🌐 IP Local: ${ipLocal}`
-    );
+    if (ventana) {
+
+        ventana.webContents.send(
+            'log',
+            `🌐 IP Local: ${ipLocal}`
+        );
+
+    }
 
 });

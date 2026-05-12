@@ -2722,3 +2722,147 @@ input:checked + .slider:before {
         align-items: flex-start;
     }
 }
+
+
+/* Notificacion */
+/* ==========================================
+   UPDATE NOTIFICACIONES
+========================================== */
+
+.notificacion-update {
+
+    position: fixed;
+    top: 20px;
+    right: -400px;
+
+    background: #111827;
+
+    color: white;
+
+    padding: 15px 20px;
+
+    border-radius: 14px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    z-index: 99999;
+
+    transition: 0.4s;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,.4);
+
+}
+
+.notificacion-update.show {
+
+    right: 20px;
+
+}
+
+.notificacion-update i {
+
+    color: #7a2eff;
+
+}
+
+/* ==========================================
+   MODAL UPDATE
+========================================== */
+
+.modal-update {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,.6);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 999999;
+
+}
+
+.modal-update-content {
+
+    width: 400px;
+
+    background: #0f172a;
+
+    border-radius: 25px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    color: white;
+
+    animation: aparecerModal .3s ease;
+
+}
+
+.modal-update-content i {
+
+    font-size: 60px;
+
+    color: #7a2eff;
+
+    margin-bottom: 15px;
+
+}
+
+.modal-update-content h2 {
+
+    margin-bottom: 10px;
+
+}
+
+.modal-update-content p {
+
+    opacity: .7;
+
+    margin-bottom: 20px;
+
+}
+
+.modal-update-content button {
+
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    background: linear-gradient(95deg,#7a2eff,#9b5dff);
+
+    color: white;
+
+    cursor: pointer;
+
+    font-weight: bold;
+
+}
+
+@keyframes aparecerModal {
+
+    from {
+
+        transform: scale(.8);
+        opacity: 0;
+
+    }
+
+    to {
+
+        transform: scale(1);
+        opacity: 1;
+
+    }
+
+}
