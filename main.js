@@ -53,6 +53,10 @@ function crearVentana() {
         }
 
     });
+    ventana.setMenu(null);
+
+
+
 
     ventana.loadFile('public/index.html');
 
