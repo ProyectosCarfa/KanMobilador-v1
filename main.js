@@ -32,6 +32,10 @@ const SCRCPY_DIR = path.join(
 autoUpdater.autoDownload = true;
 autoUpdater.autoInstallOnAppQuit = true;
 
+// IMPORTANTE
+// Evita errores de certificados en GitHub
+autoUpdater.forceDevUpdateConfig = false;
+
 // ==========================================
 // CREAR VENTANA
 // ==========================================
@@ -52,37 +56,35 @@ function crearVentana() {
 
     ventana.loadFile('public/index.html');
 
-    // DEVTOOLS SOLO EN DESARROLLO
+    // SOLO DEVTOOLS EN DESARROLLO
     if (isDev) {
 
         ventana.webContents.openDevTools();
 
     }
 
-    // CUANDO TERMINE DE CARGAR
+    // ==========================================
+    // CUANDO CARGA LA VENTANA
+    // ==========================================
+
     ventana.webContents.on('did-finish-load', () => {
 
         console.log('✅ Ventana cargada');
 
-        // SOLO BUSCAR UPDATES EN PRODUCCIÓN
+        // SOLO EN APP INSTALADA
         if (!isDev) {
 
             console.log('🔍 Buscando actualizaciones...');
 
-            autoUpdater.checkForUpdatesAndNotify();
+            setTimeout(() => {
+
+                autoUpdater.checkForUpdates();
+
+            }, 3000);
 
         } else {
 
-            console.log('🛠 Modo desarrollo: updates desactivados');
-
-            // PROBAR NOTIFICACIÓN MANUAL
-            setTimeout(() => {
-
-                ventana.webContents.send(
-                    'update_not_available'
-                );
-
-            }, 2000);
+            console.log('🛠 Modo desarrollo');
 
         }
 
@@ -129,20 +131,29 @@ app.on('activate', () => {
 });
 
 // ==========================================
-// EVENTOS UPDATE
+// EVENTOS AUTOUPDATER
 // ==========================================
 
-// BUSCANDO
+// BUSCANDO UPDATE
 autoUpdater.on('checking-for-update', () => {
 
     console.log('🔍 Verificando actualizaciones...');
+
+    if (ventana) {
+
+        ventana.webContents.send(
+            'log',
+            '🔍 Buscando actualizaciones...'
+        );
+
+    }
 
 });
 
 // UPDATE DISPONIBLE
 autoUpdater.on('update-available', (info) => {
 
-    console.log('✅ Nueva actualización encontrada');
+    console.log('✅ Nueva actualización disponible');
 
     console.log(info);
 
@@ -150,6 +161,11 @@ autoUpdater.on('update-available', (info) => {
 
         ventana.webContents.send(
             'update_available'
+        );
+
+        ventana.webContents.send(
+            'log',
+            `✅ Nueva versión encontrada: v${info.version}`
         );
 
     }
@@ -167,6 +183,11 @@ autoUpdater.on('update-not-available', (info) => {
 
         ventana.webContents.send(
             'update_not_available'
+        );
+
+        ventana.webContents.send(
+            'log',
+            '✅ Estás usando la última versión'
         );
 
     }
@@ -196,9 +217,11 @@ autoUpdater.on('download-progress', (progressObj) => {
 });
 
 // DESCARGA COMPLETA
-autoUpdater.on('update-downloaded', () => {
+autoUpdater.on('update-downloaded', (info) => {
 
     console.log('🎉 Actualización descargada');
+
+    console.log(info);
 
     if (ventana) {
 
@@ -206,14 +229,22 @@ autoUpdater.on('update-downloaded', () => {
             'update_downloaded'
         );
 
+        ventana.webContents.send(
+            'log',
+            '🎉 Actualización descargada correctamente'
+        );
+
     }
 
-    // ESPERAR PARA VER NOTIFICACIÓN
+    // INSTALAR UPDATE
     setTimeout(() => {
 
-        autoUpdater.quitAndInstall();
+        autoUpdater.quitAndInstall(
+            false,
+            true
+        );
 
-    }, 4000);
+    }, 5000);
 
 });
 
@@ -228,7 +259,7 @@ autoUpdater.on('error', (err) => {
 
         ventana.webContents.send(
             'log',
-            '❌ Error buscando actualización'
+            `❌ Error updater: ${err == null ? "desconocido" : err.message}`
         );
 
     }
