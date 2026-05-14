@@ -101,3 +101,12 @@ window.buscarDispositivosRed = () => {
 
 };
 
+// ===DETECTAR DISPOSITIVO====
+    window.conectarADB = () => {
+
+        agregarLog("🔌 Detectando dispositivo por USB...");
+        agregarLog("📱 Asegúrate de aceptar la depuración en tu celular");
+
+        ipcRenderer.send('conectar-adb-pro');
+
+    };

@@ -30,7 +30,7 @@
                     <span>Dispositivo</span>
                 </li>
             </a>
-            <a href="#controles" class="disabled-link" >
+            <a href="#controles" class="disabled-link">
                 <li class="menu-item" data-section="controles">
                     <i class="fas fa-gamepad"></i>
                     <span>Controles</span>
@@ -139,10 +139,14 @@
                         <p>Conecta tu dispositivo Android por medio de un cable USB</p>
                     </div>
                     <p>Estado: <span id="estatus">No conectado</span></p>
-                    <button id="connectBtn">
+                    <button id="conectarADB" onclick="conectarADB()" style="background-color: rgb(255, 60, 0);">
+                        <i class="fa-solid fa-plug"></i>
+                        Detectar Dispositivo
+                    </button>
+                    <button id="connectBtn" style="background-color: green;">
                         <i class="fa-solid fa-link"></i> Conectar
                     </button>
-                    <button id="stopBtn">
+                    <button id="stopBtn" style="background-color: red;">
                         <i class="fa-solid fa-stop"></i> Detener
                     </button>
                 </div>
@@ -726,7 +730,7 @@
                     <p>Contacto directo para soporte técnico y consultas</p>
                     <div class="contact-info">
                         <i class="fa-regular fa-envelope"></i>
-                        <span>alvinescarlos887@gmail.com</span>
+                        <span>kanmobilador@gmail.com</span>
                     </div>
                     <button class="copy-btn" data-copy="alvinescarlos887@gmail.com">
                         <i class="fa-regular fa-copy"></i> Copiar
@@ -758,9 +762,9 @@
                     <p>Atención rápida por mensajería instantánea</p>
                     <div class="contact-info">
                         <i class="fa-brands fa-whatsapp"></i>
-                        <span>+51 999 999 999</span>
+                        <span>+51 *** *** ***</span>
                     </div>
-                    <button class="whatsapp-btn">
+                    <button class="whatsapp-btn" disabled>
                         <i class="fa-brands fa-whatsapp"></i> Enviar Mensaje
                     </button>
                 </div>
@@ -776,7 +780,7 @@
                         <i class="fa-brands fa-discord"></i>
                         <span>Discord.gg/KanMobilador</span>
                     </div>
-                    <button class="discord-btn">
+                    <button class="discord-btn" disabled>
                         <i class="fa-brands fa-discord"></i> Unirse al Servidor
                     </button>
                 </div>
@@ -808,7 +812,7 @@
                         <i class="fa-regular fa-clipboard"></i>
                         <span>Reporte de Incidencias</span>
                     </div>
-                    <button class="report-btn">
+                    <button class="report-btn" disabled>
                         <i class="fa-regular fa-flag"></i> Reportar Error
                     </button>
                 </div>
@@ -844,7 +848,7 @@
                 <h2><i class="fa-solid fa-code-branch"></i> Historial de Versiones</h2>
                 <div class="version-history">
                     <div class="version-item">
-                        <strong>v1.0.1</strong> - Marzo 2026
+                        <strong>v1.0.1 - Marzo 2026 </strong>
                         <ul>
                             <li>✨ Soporte nativo para Android 14</li>
                             <li>🚀 Mejora en la latencia del mirroring</li>
@@ -852,7 +856,7 @@
                         </ul>
                     </div>
                     <div class="version-item">
-                        <strong>v2.1.1</strong> - Abril 2026
+                        <strong>1.0.7 - May 2026 </strong>
                         <span class="version-badge">Actual</span>
                         <ul>
                             <li>🔧 Optimización de rendimiento</li>

@@ -73,12 +73,12 @@ function crearVentana() {
 
     ventana.webContents.on('did-finish-load', () => {
 
-        console.log('✅ Ventana cargada');
+        console.log('Ventana cargada');
 
         // SOLO EN APP INSTALADA
         if (!isDev) {
 
-            console.log('🔍 Buscando actualizaciones...');
+            console.log('Buscando actualizaciones...');
 
             setTimeout(() => {
 
@@ -448,5 +448,119 @@ ipcMain.on('escanear-red', async () => {
         );
 
     }
+
+});
+
+// DETECTAR DISPOSITIVO
+ipcMain.on('conectar-adb-pro', () => {
+
+    const fs = require('fs');
+
+    const rutaIP = path.join(SCRCPY_DIR, 'ip.txt');
+
+    const proceso = exec(`cmd /c "cd /d ${SCRCPY_DIR} && adb.exe shell ip route"`);
+
+    let output = "";
+
+    proceso.stdout.on('data', (data) => {
+        output += data.toString();
+        ventana.webContents.send('log', data.toString());
+    });
+
+    proceso.on('close', () => {
+
+        // const match = output.match(/wlan0.*src\s+(\d+\.\d+\.\d+\.\d+)/);
+        const match = output.match(/src\s+(\d+\.\d+\.\d+\.\d+)/);
+
+        if (!match) {
+            ventana.webContents.send('log', '❌ No se encontró IP WiFi (wlan0)');
+            ventana.webContents.send('log', 'Desactiva datos móviles y usa WiFi');
+            return;
+        }
+
+        // const ip = match[1];
+
+        // fs.writeFileSync(rutaIP, ip);
+
+        // ventana.webContents.send('log', `IP WiFi guardada: ${ip}`);
+        // ventana.webContents.send('log', 'Ahora sí inicia conexión');
+        const ip = match[1];
+
+        fs.writeFileSync(rutaIP, ip);
+
+        ventana.webContents.send(
+            'log',
+            `💾 IP WiFi guardada: ${ip}`
+        );
+
+        // ACTIVAR TCPIP
+        exec(
+            `cmd /c "cd /d ${SCRCPY_DIR} && adb.exe tcpip 5555"`,
+            () => {
+
+                ventana.webContents.send(
+                    'log',
+                    '📡 ADB TCPIP activado'
+                );
+
+                // CONECTAR
+                exec(
+                    `cmd /c "cd /d ${SCRCPY_DIR} && adb.exe connect ${ip}:5555"`,
+                    (error, stdout, stderr) => {
+
+                        if (stdout) {
+
+                            ventana.webContents.send(
+                                'log',
+                                stdout
+                            );
+
+                        }
+
+                        if (stderr) {
+
+                            ventana.webContents.send(
+                                'log',
+                                stderr
+                            );
+
+                        }
+
+                        ventana.webContents.send(
+                            'log',
+                            '🚀 Dispositivo listo para scrcpy'
+                        );
+
+                    }
+                );
+
+            }
+        );
+    });
+
+});
+
+
+
+
+// ATAJOS DE TECLADOS
+// ==========================================
+// ATAJOS DE TECLADO
+// ==========================================
+
+const { globalShortcut } = require('electron');
+
+app.whenReady().then(() => {
+
+    // RECARGAR APP
+    globalShortcut.register('CommandOrControl+R', () => {
+
+        if (ventana) {
+
+            ventana.reload();
+
+        }
+
+    });
 
 });
