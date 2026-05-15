@@ -33,5 +33,5 @@ echo INICIANDO SCRCPY
 echo.
 echo Resolución fija
 echo.
-scrcpy.exe -s %IP%:5555 --video-bit-rate=32M --max-fps=60 --video-codec=h265 --stay-awake --window-title="DRAGONEMU 4K" --window-borderless
+scrcpy.exe -s %IP%:5555 --video-bit-rate=32M --max-fps=60 --stay-awake --window-title="KanMobilador - Controla tu dispositivo" --window-borderless
 pause
